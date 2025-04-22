@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Interactive CV</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      overflow-x: hidden;
+      color: white;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  padding: 15px 0;
+  z-index:1000;
+  backdrop-filter: blur(10px);
+  animation: shakeDance 200ms infinite ease-in-out;
+  
+}
+
+@keyframes shakeDance {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-2px) rotate(-1deg); }
+  20% { transform: translateX(2px) rotate(1deg); }
+  30% { transform: translateX(-3px) rotate(-1.5deg); }
+  40% { transform: translateX(3px) rotate(1.5deg); }
+  50% { transform: translateX(-2px) rotate(-1deg); }
+  60% { transform: translateX(2px) rotate(1deg); }
+  70% { transform: translateX(0); }
+  80% { transform: rotate(1deg); }
+  90% { transform: rotate(-1deg); }
+}
+    nav a {
+        position:relative;
+      color: white;
+      text-decoration: none;
+      margin: 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      overflow: hidden;
+      font-family:copper-black;
+      transition: transform 0.3s, color 0.3s;
+    }
+
+    nav a:hover::after {
+      color: #00ffc8;
+      animation:sparkle 0.75s ease-forwads;
+      transform: scale(1.2);
+    }
+    nav a::after{
+        content:'';
+        position: absolute;
+        top:50%;
+        left:-75%;
+        width:50%;
+        height:100%;
+        background:linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparenr);
+        transform:skewX(-20deg);}
+        
+    section {
+      padding: 100px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    section h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00ffc8;
+      animation: floatText 4s ease-in-out ;
+      display:inline-block;
+         animation: bounce 4s ease-out forwards infinite;
+    opacity: 0;
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(-50px); opacity: 0; }
+    60% { transform: translateY(10px); opacity: 1; }
+    100% { transform: translateY(0); }
+  }
+    
+    section p {
+      max-width: 700px;
+      text-align: center;
+      line-height: 1.6;
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    @keyframes floatText {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0,255,200,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover {
+      transform: rotateY(50deg) scale(0.5);
+      box-shadow: 0 0 40px rgba(0,255,200,0.4);
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      align-items: center;
+      font-size: 16px;
+      margin-left:20%;
+      background: #00ffc8;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #00cc9e;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bubbles"></canvas>
+
+  <nav>
+    <a href="#about">About</a>|
+    <a href="#experience">Experience</a>||
+    <a href="#skills">Skills</a>||
+    <a href="#projects">Projects</a>|
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about">
+    <h1>About Daxton</h1>
+    <div class="card">
+      <p>Hello! I'm a passionate web developer with experience in frontend and backend technologies. I love creating immersive digital experiences.</p>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h1>Experience</h1>
+    <div class="card">
+      <p>3+ years as a full-stack developer. Worked on e-commerce, real-time messaging, and media platforms.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h1>Skills</h1>
+    <div class="card">
+      <p>HTML, CSS, JavaScript, PHP, MySQL, React, Node.js, Three.js</p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h1>Projects</h1>
+    <div class="card">
+      <p>Check out my latest projects on GitHub. Including a music player app, chat platform, and GPS tracker.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h1>Contact</h1>
+    <div class="card">
+      <p>Email:Darkstonedj8@gmail.com<br>Phone: +254758838157</p>
+      <button onclick="downloadCV()">Download CV</button>
+    </div>
+  </section>
+
+  <script>
+    // Smooth Scroll
+    document.querySelectorAll("nav a").forEach(link => {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        target.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    // Bubble background animation
+    const canvas = document.getElementById('bubbles');
+    const ctx = canvas.getContext('2d');
+    let bubbles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Bubble {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 100;
+        this.radius = Math.random() * 6 + 2;
+        this.speed = Math.random() * 2 + 1;
+        this.alpha = Math.random() * 0.5 + 0.3;
+      }
+
+      update() {
+        this.y -= this.speed;
+        if (this.y < -this.radius) this.reset();
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 255, 200, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 100; i++) {
+      bubbles.push(new Bubble());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      bubbles.forEach(b => {
+        b.update();
+        b.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Download CV
+    function downloadCV() {
+      const link = document.createElement('a');
+      link.href = 'your-cv-file.pdf'; // Replace with your real file
+      link.download = 'My_CV.pdf';
+      link.click();
+    }
+      const bounce = document.querySelector(".bounce-text");
+  const word = bounce.textContent;
+  bounce.textContent = "";
+
+  [...word].forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+    span.style.animationDelay = `${i * 0.05}s`;
+    bounce.appendChild(span);
+  });
+  </script>
+
+</body>
+</html>
